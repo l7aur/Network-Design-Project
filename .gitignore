@@ -1,0 +1,11 @@
+# Ignore LaTeX output files
+doc/ProjectDocumentation.aux
+doc/ProjectDocumentation.bbl
+doc/ProjectDocumentation.blg
+doc/ProjectDocumentation.fdb_latexmk
+doc/ProjectDocumentation.fls
+doc/ProjectDocumentation.log
+doc/ProjectDocumentation.out
+doc/ProjectDocumentation.pdf
+doc/ProjectDocumentation.synctex.gz
+doc/ProjectDocumentation.toc
