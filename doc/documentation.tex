@@ -539,25 +539,22 @@ The two procurement options are summarised in Table~\ref{tab:utp_boxes}.
 \end{table}
 
 % ----------------------------------------------------------------
-\section{Fibre Optic Cable Calculation}
+\section{Fiber Optic Cable Calculation}
 % ----------------------------------------------------------------
 
 \subsection{Backbone Topology}
 
-The four distribution frames are interconnected by OM4 multimode
-fibre optic (50/125\,\textmu m) in a \textbf{redundant ring/mesh topology},
-providing multiple paths between any two DFs.
-The node labelling used in the cable-planning spreadsheet is:
+The four distribution frames are interconnected by OM4 multimode fiber optic (50/125\,\textmu m) in a \textbf{redundant ring/mesh topology}, providing multiple paths between any two DFs. The node labelling used in the cable-planning spreadsheet is:
 \begin{itemize}[noitemsep]
   \item \textbf{A} = MDF \quad \textbf{B} = IDF1 \quad \textbf{C} = IDF2 \quad \textbf{D} = IDF3
   \item suffix \textbf{0} = primary port; suffix \textbf{1} = secondary (redundant) port
 \end{itemize}
 
-\subsection{Detailed Fibre Link Calculation}
+\subsection{Detailed Fiber Link Calculation}
 
 \begin{table}[H]
   \centering
-  \caption{Fibre Optic Backbone Links}
+  \caption{Fiber Optic Backbone Links}
   \label{tab:fo_links}
   \begin{tabular}{C{1.5cm} C{1.5cm} R{2cm} L{6cm}}
     \toprule
@@ -588,7 +585,7 @@ The node labelling used in the cable-planning spreadsheet is:
   L_{\text{reserve}}&= 35 \times 1.15 = 40.25\,\mathrm{m} \approx 41\,\mathrm{m}
 \end{align*}
 
-Duplex OM4 cable is used, so both transmit and receive fibres are contained in a
+Duplex OM4 cable is used, so both transmit and receive fibers are contained in a
 single cable run. The total cable procurement for the entire backbone is:
 
 \[
@@ -596,7 +593,7 @@ single cable run. The total cable procurement for the entire backbone is:
   \quad \text{(one 300\,m reel of duplex OM4)}
 \]
 
-Each distribution frame is equipped with one \textbf{PP-72X100G-MMF} fibre patch panel
+Each distribution frame is equipped with one \textbf{PP-72X100G-MMF} fiber patch panel
 (72 LC duplex ports, OM4 compatible), accommodating all backbone connections and future expansion.
 
 % ================================================================
@@ -606,10 +603,7 @@ Each distribution frame is equipped with one \textbf{PP-72X100G-MMF} fibre patch
 
 \section{IP Addressing Scheme}
 
-The network uses a \textbf{private address space} under the block \texttt{10.10.0.0/16},
-NAT-ed to the public IP address \texttt{109.103.42.124}.
-VLANs are segmented to isolate traffic types and departments.
-The \textbf{Management VLAN} is protected from all other VLANs by firewall policy.
+The network uses a \textbf{private address space} under the block \texttt{10.10.0.0/16}, NAT-ed to the public IP address \texttt{203.0.113.0}. VLANs are segmented to isolate traffic types and departments. The \textbf{Management VLAN} is protected from all other VLANs by firewall policy.
 
 Total network capacity planning:
 \begin{itemize}[noitemsep]
@@ -637,43 +631,15 @@ Total network capacity planning:
   \bottomrule
   \endlastfoot
   \rowcolor{ltblue}
-  10  & Management      & 10.10.10.0    & 10.10.10.1   & /25 & 126 \\
-  20  & IP\_Phones      & 10.10.20.0    & 10.10.20.1   & /24 & 254 \\
+  10  & Management      & 10.1.10.0    & 10.1.10.1   & /24 & 254 \\
+  20  & IP\_Phones      & 10.1.20.0    & 10.1.20.1   & /24 & 254 \\
   \rowcolor{rowgray}
-  30  & WLAN            & 10.10.32.0    & 10.10.32.1   & /22 & 1{,}022 \\
-  100 & HR              & 10.10.100.0   & 10.10.100.1  & /26 & 62 \\
+  32  & WLESS           & 10.1.32.0    & 10.1.32.1   & /22 & 1022 \\
+  40 & HR               & 10.1.40.0    & 10.1.40.1   & /24 & 254 \\
   \rowcolor{rowgray}
-  101 & Finance         & 10.10.100.64  & 10.10.100.65 & /26 & 62 \\
-  102 & IT\_Ops         & 10.10.100.128 & 10.10.100.129& /26 & 62 \\
-  \rowcolor{rowgray}
-  103 & Legal           & 10.10.100.192 & 10.10.100.193& /26 & 62 \\
-  104 & Sales\_A        & 10.10.101.0   & 10.10.101.1  & /26 & 62 \\
-  \rowcolor{rowgray}
-  105 & Sales\_B        & 10.10.101.64  & 10.10.101.65 & /26 & 62 \\
-  106 & Sales\_C        & 10.10.101.128 & 10.10.101.129& /26 & 62 \\
-  \rowcolor{rowgray}
-  107 & Sales\_D        & 10.10.101.192 & 10.10.101.193& /26 & 62 \\
-  108 & Marketing\_A    & 10.10.102.0   & 10.10.102.1  & /26 & 62 \\
-  \rowcolor{rowgray}
-  109 & Marketing\_B    & 10.10.102.64  & 10.10.102.65 & /26 & 62 \\
-  110 & Frontend\_Dev   & 10.10.102.128 & 10.10.102.129& /26 & 62 \\
-  \rowcolor{rowgray}
-  111 & Backend\_Dev    & 10.10.102.192 & 10.10.102.193& /26 & 62 \\
-  112 & QA\_Test        & 10.10.103.0   & 10.10.103.1  & /26 & 62 \\
-  \rowcolor{rowgray}
-  113 & Logistics       & 10.10.103.64  & 10.10.103.65 & /26 & 62 \\
-  114 & Purchasing      & 10.10.103.128 & 10.10.103.129& /26 & 62 \\
-  \rowcolor{rowgray}
-  115 & Exec\_Suite     & 10.10.103.192 & 10.10.103.193& /26 & 62 \\
-  116 & DevOps\_A       & 10.10.104.0   & 10.10.104.1  & /26 & 62 \\
-  \rowcolor{rowgray}
-  117 & DevOps\_B       & 10.10.104.64  & 10.10.104.65 & /26 & 62 \\
-  118 & SRE\_Internal   & 10.10.104.128 & 10.10.104.129& /26 & 62 \\
-  \rowcolor{rowgray}
-  119 & Security\_Ops   & 10.10.104.192 & 10.10.104.193& /26 & 62 \\
-  120 & Training\_Lab   & 10.10.105.0   & 10.10.105.1  & /26 & 62 \\
+  50 & Finance          & 10.1.50.0    & 10.1.50.1   & /24 & 254 \\
   \midrule
-  \multicolumn{5}{r}{\textbf{Total usable IP addresses}} & \textbf{2{,}704} \\
+  \multicolumn{5}{r}{\textbf{Total usable IP addresses}} & \textbf{1526} \\
 \end{longtable}
 
 \noindent\textbf{Management VLAN security note:}
@@ -768,7 +734,7 @@ justification given in Section~\ref{sec:equip_justification}.
 \end{table}
 
 % ----------------------------------------------------------------
-\section{Fibre Optic Line Card (min 40\,Gbps ports)}
+\section{Fiber Optic Line Card (min 40Gbps ports)}
 % ----------------------------------------------------------------
 
 \begin{table}[H]
@@ -855,8 +821,8 @@ justification given in Section~\ref{sec:equip_justification}.
     \midrule
     Form factor            & Physical appliance (1U)         & Cloud SaaS \\
     \rowcolor{rowgray}
-    AP capacity            & 2{,}000 APs                     & Unlimited (subscription) \\
-    Throughput             & 160\,Gbps                       & Cloud-based \\
+    AP capacity            & 1000 APs                        & Unlimited (subscription) \\
+    Throughput             & 160Gbps                         & Cloud-based \\
     \rowcolor{rowgray}
     WiFi 7 (802.11be)      & Yes                             & Yes \\
     On-premises operation  & Yes (no Internet required)      & Requires Internet \\
@@ -1212,8 +1178,8 @@ TODO
 
 Key features:
 \begin{itemize}[noitemsep]
-  \item MDF room located adjacent to Room~1.11 
-  \item IDF1 located at the far wing, adjacent to Room~1.23 
+  \item MDF room located adjacent to Room~1.11
+  \item IDF1 located at the far wing, adjacent to Room~1.23
   \item Main cable tray runs along the corridor spine
   \item 22 networked rooms, bathrooms (1.3, 1.9, 1.10, 1.20, 1.21, 1.28, 1.34, 1.35) excluded
 \end{itemize}
