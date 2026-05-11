@@ -6,7 +6,6 @@ doc/documentation.fdb_latexmk
 doc/documentation.fls
 doc/documentation.log
 doc/documentation.out
-doc/documentation.pdf
 doc/documentation.synctex.gz
 doc/documentation.toc
 doc/documentation.lof
