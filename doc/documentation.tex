@@ -66,7 +66,7 @@
 \newcolumntype{C}[1]{>{\centering\arraybackslash}p{#1}}
 \newcolumntype{R}[1]{>{\raggedleft\arraybackslash}p{#1}}
 
-\newcommand{\teamleader}{Laurentiu, Grad \textnormal{(Team Leader)}}
+\newcommand{\teamleader}{Laurentiu, Grad}
 \newcommand{\memberA}{Julien, Iancu}
 \newcommand{\memberB}{Alexandru, Mihoc}
 \newcommand{\memberC}{Razvan, Cosma}
@@ -544,7 +544,10 @@ The two procurement options are summarised in Table~\ref{tab:utp_boxes}.
 
 \subsection{Backbone Topology}
 
-The four distribution frames are interconnected by OM4 multimode fiber optic (50/125\,\textmu m) in a \textbf{redundant ring/mesh topology}, providing multiple paths between any two DFs. The node labelling used in the cable-planning spreadsheet is:
+The four distribution frames are interconnected by OM4 multimode
+fiber optic (50/125\,\textmu m) in a \textbf{redundant ring/mesh topology},
+providing multiple paths between any two DFs.
+The node labelling used in the cable-planning spreadsheet is:
 \begin{itemize}[noitemsep]
   \item \textbf{A} = MDF \quad \textbf{B} = IDF1 \quad \textbf{C} = IDF2 \quad \textbf{D} = IDF3
   \item suffix \textbf{0} = primary port; suffix \textbf{1} = secondary (redundant) port
@@ -593,7 +596,7 @@ single cable run. The total cable procurement for the entire backbone is:
   \quad \text{(one 300\,m reel of duplex OM4)}
 \]
 
-Each distribution frame is equipped with one \textbf{PP-72X100G-MMF} fiber patch panel
+Each distribution frame is equipped with one \textbf{PP-72X100G-SMF} fiber patch panel
 (72 LC duplex ports, OM4 compatible), accommodating all backbone connections and future expansion.
 
 % ================================================================
@@ -601,9 +604,14 @@ Each distribution frame is equipped with one \textbf{PP-72X100G-MMF} fiber patch
 % ================================================================
 \chapter{VLANs and IP Address Assignment}
 
+
 \section{IP Addressing Scheme}
 
-The network uses a \textbf{private address space} under the block \texttt{10.10.0.0/16}, NAT-ed to the public IP address \texttt{203.0.113.0}. VLANs are segmented to isolate traffic types and departments. The \textbf{Management VLAN} is protected from all other VLANs by firewall policy.
+\label{chap:vlans}
+The network uses a \textbf{private address space} under the block \texttt{10.1.0.0/16},
+NAT-ed to the public IP address \texttt{203.0.113.0}.
+VLANs are segmented to isolate traffic types and departments.
+The \textbf{Management VLAN} is protected from all other VLANs by firewall policy.
 
 Total network capacity planning:
 \begin{itemize}[noitemsep]
@@ -630,17 +638,51 @@ Total network capacity planning:
   \endfoot
   \bottomrule
   \endlastfoot
+  %--- Core / Infrastructure VLANs ---
   \rowcolor{ltblue}
-  10  & Management      & 10.1.10.0    & 10.1.10.1   & /24 & 254 \\
-  20  & IP\_PhonesData  & 10.1.19.0    & 10.1.19.1   & /24 & 254 \\
-  20  & IP\_Phones      & 10.1.20.0    & 10.1.20.1   & /24 & 254 \\
+  10  & Management      & 10.1.10.0     & 10.1.10.1    & /24 & 254 \\
+  19  & IP\_Phone\_Data & 10.1.19.0     & 10.1.19.1    & /24 & 254 \\
   \rowcolor{rowgray}
-  32  & WLESS           & 10.1.32.0    & 10.1.32.1   & /22 & 1022 \\
-  40 & HR               & 10.1.40.0    & 10.1.40.1   & /24 & 254 \\
+  20  & IP\_Phone       & 10.1.20.0     & 10.1.20.1    & /24 & 254 \\
+  32  & Wireless        & 10.1.32.0     & 10.1.32.1    & /22 & 1{,}022 \\
   \rowcolor{rowgray}
-  50 & Finance          & 10.1.50.0    & 10.1.50.1   & /24 & 254 \\
+  40  & Data\_Staff     & 10.1.40.0     & 10.1.40.1    & /24 & 254 \\
+  50  & Data\_Guest     & 10.1.50.0     & 10.1.50.1    & /24 & 254 \\
+  %--- Department VLANs ---
+  \rowcolor{ltblue}
+  100 & HR              & 10.1.100.0    & 10.1.100.1   & /26 & 62 \\
+  110 & Finance         & 10.1.110.0    & 10.1.110.1   & /26 & 62 \\
+  \rowcolor{rowgray}
+  120 & IT\_Ops         & 10.1.120.0    & 10.1.120.1   & /26 & 62 \\
+  130 & Legal           & 10.1.130.0    & 10.1.130.1   & /26 & 62 \\
+  \rowcolor{ltblue}
+  140 & Sales\_North    & 10.1.140.0    & 10.1.140.1   & /26 & 62 \\
+  150 & Sales\_South    & 10.1.150.0    & 10.1.150.1   & /26 & 62 \\
+  \rowcolor{rowgray}
+  160 & Sales\_East     & 10.1.160.0    & 10.1.160.1   & /26 & 62 \\
+  170 & Sales\_West     & 10.1.170.0    & 10.1.170.1   & /26 & 62 \\
+  \rowcolor{ltblue}
+  180 & Mktg\_Digital   & 10.1.180.0    & 10.1.180.1   & /26 & 62 \\
+  190 & Mktg\_Brand     & 10.1.190.0    & 10.1.190.1   & /26 & 62 \\
+  \rowcolor{rowgray}
+  200 & Frontend\_Dev   & 10.1.200.0    & 10.1.200.1   & /26 & 62 \\
+  210 & Backend\_Dev    & 10.1.210.0    & 10.1.210.1   & /26 & 62 \\
+  \rowcolor{ltblue}
+  220 & QA\_Test        & 10.1.220.0    & 10.1.220.1   & /26 & 62 \\
+  230 & Logistics       & 10.1.230.0    & 10.1.230.1   & /26 & 62 \\
+  \rowcolor{rowgray}
+  240 & Purchasing      & 10.1.240.0    & 10.1.240.1   & /26 & 62 \\
+  250 & Exec\_Suite     & 10.1.250.0    & 10.1.250.1   & /26 & 62 \\
+  \rowcolor{ltblue}
+  260 & DevOps\_Primary & 10.2.0.0      & 10.2.0.1     & /26 & 62 \\
+  270 & DevOps\_Second  & 10.2.10.0     & 10.2.10.1    & /26 & 62 \\
+  \rowcolor{rowgray}
+  280 & SRE\_Internal   & 10.2.20.0     & 10.2.20.1    & /26 & 62 \\
+  290 & Security\_Ops   & 10.2.30.0     & 10.2.30.1    & /26 & 62 \\
+  \rowcolor{ltblue}
+  300 & Training\_Lab   & 10.2.40.0     & 10.2.40.1    & /26 & 62 \\
   \midrule
-  \multicolumn{5}{r}{\textbf{Total usable IP addresses}} & \textbf{1526} \\
+  \multicolumn{5}{r}{\textbf{Total usable IP addresses}} & \textbf{3{,}532} \\
 \end{longtable}
 
 \noindent\textbf{Management VLAN security note:}
@@ -655,7 +697,7 @@ Remote access to all network devices (SSH) is available only through VLAN\,10.
 \chapter{Equipment Selection}
 
 For each equipment category, two options are compared.
-\textbf{Option~1 (Cisco)} was selected as the preferred choice, with a 
+\textbf{Option~1 (Cisco)} was selected as the preferred choice, with a
 justification given in Section~\ref{sec:equip_justification}.
 
 % ----------------------------------------------------------------
@@ -735,7 +777,7 @@ justification given in Section~\ref{sec:equip_justification}.
 \end{table}
 
 % ----------------------------------------------------------------
-\section{Fiber Optic Line Card (min 40Gbps ports)}
+\section{Fiber Optic Line Card (min 40\,Gbps ports)}
 % ----------------------------------------------------------------
 
 \begin{table}[H]
@@ -822,8 +864,8 @@ justification given in Section~\ref{sec:equip_justification}.
     \midrule
     Form factor            & Physical appliance (1U)         & Cloud SaaS \\
     \rowcolor{rowgray}
-    AP capacity            & 1000 APs                        & Unlimited (subscription) \\
-    Throughput             & 160Gbps                         & Cloud-based \\
+    AP capacity            & 2{,}000 APs                     & Unlimited (subscription) \\
+    Throughput             & 160\,Gbps                       & Cloud-based \\
     \rowcolor{rowgray}
     WiFi 7 (802.11be)      & Yes                             & Yes \\
     On-premises operation  & Yes (no Internet required)      & Requires Internet \\
@@ -940,7 +982,7 @@ clearance rows between heat-generating equipment groups.
     \toprule
     \textbf{Space (U)} & \textbf{Position} & \textbf{Equipment} & \textbf{Model} & \textbf{Power (W)} \\
     \midrule
-    1  & Top    & OF Patch Panel              & PP-72X100G-MMF     & --    \\
+    1  & Top    & OF Patch Panel              & PP-72X100G-SMF     & --    \\
     \rowcolor{rowgray}
     13 &        & L2/L3 Switch Chassis        & Cisco Catalyst 9410R & --   \\
        &        & \quad Supervisor $\times$2  & C9400-SUP-1XL      & 350$\times$2 \\
@@ -975,7 +1017,7 @@ clearance rows between heat-generating equipment groups.
     \toprule
     \textbf{Space (U)} & \textbf{Equipment} & \textbf{Model} & \textbf{Power (W)} \\
     \midrule
-    1  & OF Patch Panel                  & PP-72X100G-MMF & -- \\
+    1  & OF Patch Panel                  & PP-72X100G-SMF & -- \\
     \rowcolor{rowgray}
     13 & L2/L3 Switch Chassis (same config as MDF, no Firewall) & Cisco Catalyst 9410R & -- \\
     14 & UTP Patch Panel $\times$7       & CPPKL6ATG48WBL & -- \\
@@ -1152,16 +1194,280 @@ allows centralised monitoring of all 8 units.
 % ================================================================
 \chapter{Active Equipment List}
 
-TODO 
+The network architecture utilizes a Cisco-centric ecosystem to ensure high-speed throughput and centralized management.
+
+\begin{longtable}{L{2.2cm} L{2.8cm} L{3.5cm} C{0.8cm} R{2.1cm} R{2.1cm}}
+  \caption{Active Equipment Bill of Materials}\label{tab:active_bom_final}\\
+  \toprule
+  \textbf{Category} & \textbf{Model} & \textbf{Short Description} & \textbf{Qty} & \textbf{Unit Price} & \textbf{Total} \\
+  \midrule
+  \endfirsthead
+  \multicolumn{6}{c}{\small\tablename~\thetable{} \textit{(continued)}}\\
+  \toprule
+  \textbf{Category} & \textbf{Model} & \textbf{Short Description} & \textbf{Qty} & \textbf{Unit Price} & \textbf{Total} \\
+  \midrule
+  \endhead
+  \bottomrule
+  \endlastfoot
+  Modular Chassis   & C9410R          & 10-slot       & 4  & €6,100.82   & €24,403.28  \\
+  \rowcolor{rowgray}
+  Supervisor Engine & C9400-SUP-1XL   & 480 Mpps, L3 control plane        & 8  & €7,123.14   & €56,985.12  \\
+  1G PoE Card       & C9400-LC-48P    & 48 x 1G RJ-45 \& PoE+             & 23 & €4,959.83   & €114,076.09 \\
+  \rowcolor{rowgray}
+  40G Fiber Card    & C9400-LC-12QC   & QSFP+ \& 12 x 40GE, 4 x 100GE     & 4  & €17,336.86  & €69,347.44  \\
+  mGig AP Card      & C9400-LC-48UX   & 48 x mGig (up to 10G) \& PoE++    & 4  & €5,015.78   & €20,063.12  \\
+  \rowcolor{rowgray}
+  Power Supply      & PWR-C4-3200WAC  & 3200W AC       & 12 & €862.39   & €10,348.68 \\
+  Chassis Fan Tray  & C9410-FAN       & Hot-swap system fans    & 4  & €695.14     & €2,780.56   \\
+  \rowcolor{rowgray}
+  Firewall          & Secure Firewall 4245  & 70 Gbps FW \& 16 x 10G, 2 x 100G  & 1  & €152,257.81 & €152,257.81 \\
+  FW Fan Tray       & FPR4200-FAN     & FW fan modules          & 3  & €695.14     & €2,085.42   \\
+  \rowcolor{rowgray}
+  WLAN Controller   & Cisco CW9800L   & Up to 2,000 APs   & 1  & €3,686.60   & €3,686.60   \\
+  Access Points     & Wireless 9178   & WiFi 7 \& tri-band, tri-radio     & 75 & €5,455.89   & €409,191.75 \\
+  \rowcolor{rowgray}
+  IP Phones         & IP Phone 8861      & 5-line \& 5" VGA display, WiFi    & 67 & €366.20     & €24,535.40  \\
+  OF Connectors      & QSFP+           & 40GBASE-SR4 \& SMF, LC duplex     & 50 & €343.64     & €17,182.00  \\
+  \rowcolor{rowgray}
+  UPS System        & APC SRT10KXLT   & 10kVA/10kW  & 8  & €13,285.79   & €106,286.32  \\
+  UPS Battery       & SRT192BP2      & 8/10kVA     & 8  & €1,833.79   & €14,670.32  \\
+  \rowcolor{rowgray}
+  Cooling Unit      & Daikin ADEAS60A & 20,000 BTU/h \& 5,7 kW     & 8  & €1,996.01   & 15,968.08€  \\
+  \midrule
+  \multicolumn{4}{r}{\textbf{Active Equipment Total}} & \textbf{€1,043,867.99} \\
+\end{longtable}
+
 % ================================================================
 %  CHAPTER 6 – MATERIAL LIST
 % ================================================================
 \chapter{Material List}
 
-TODO
+This chapter describes the passive infrastructure.
+
+\begin{small}
+\begin{longtable}{L{2.0cm} L{2.4cm} L{4.6cm} R{1.7cm} C{0.8cm} R{2.1cm}}
+  \caption{Material List – Quantities and Prices}\label{tab:material_list}\\
+  \toprule
+  \textbf{Type} & \textbf{Name} & \textbf{Characteristics} & \textbf{Unit Price} & \textbf{Qty} & \textbf{Value} \\
+  \midrule
+  \endfirsthead
+  \multicolumn{6}{c}{\small\tablename~\thetable{} \textit{(continued)}}\\
+  \toprule
+  \textbf{Type} & \textbf{Name} & \textbf{Characteristics} & \textbf{Unit Price} & \textbf{Qty} & \textbf{Value} \\
+  \midrule
+  \endhead
+  \midrule
+  \multicolumn{6}{r}{\small\textit{Continued on next page}}\\
+  \endfoot
+  \bottomrule
+  \endlastfoot
+
+  Outlet & Double Outlet & Cat6 RJ-45, 2-port, wall-mount & €20.00 & 535 & €10,700.00 \\
+  \rowcolor{rowgray}
+  UTP Cable & CommScope & Cat6 U/UTP, LSZH, 305 m box & €450.00 & 207 & €93,150.00 \\
+  
+  FO Cable & OS2 Duplex & Singlemode 9/125, 300 m reel & €5,000.00 & 1 & €5,000.00 \\
+  \rowcolor{rowgray}
+  Raceway & PVC Duct & 40$\times$40 mm, surface-mount, 2 m & €12.00 & 500 & €6,000.00 \\
+  
+  Patch Panel & UTP Panel CPPKL6ATG48 WBL & 48-port Cat6, 10 Gbps ready & €1,100.00 & 28 & €30,800.00 \\
+  \rowcolor{rowgray}
+  Patch Panel & FO Panel PP-72X100G-SMF & Cisco 72$\times$100G, OS2 SMF & €35,000.00 & 4 & €140,000.00 \\
+  
+  Patch Cord & UTP 1m & Cat6, Blue, Rack-side & €18.00 & 1,070 & €19,260.00 \\
+  \rowcolor{rowgray}
+  Patch Cord & UTP 3m & Cat6, Gray, User-side & €22.00 & 1,070 & €23,540.00 \\
+  
+  Patch Cord & FO 1m & LC/LC Duplex, OS2 Singlemode & €25.00 & 16 & €400.00 \\
+  \rowcolor{rowgray}
+  Organizer & Horizontal & Single-sided, cover & €150.00 & 24 & €3,600.00 \\
+  
+  Rack & APC Rack NetShelter SX & 44U Open-frame & €800.00 & 4 & €3,200.00 \\
+  \rowcolor{rowgray}
+  Others & Wall boxes & Surface-mount & €5.00 & 535 & €2,675.00 \\
+  
+  Others & Labels & Self-laminating, printable wrap & €40.00 & 20 & €800.00 \\
+  \rowcolor{rowgray}
+  Others & Cable ties & Nylon 300mm, UV-resistant & €10.00 & 50 & €500.00 \\
+
+  \midrule
+  \multicolumn{5}{r}{\textbf{Total Material Cost}} & \textbf{€339,625.00} \\
+\end{longtable}
+\end{small}
 
 % ================================================================
-%  CHAPTER 7 – NETWORK DRAWINGS
+%  CHAPTER 7 – PACKET TRACER SIMULATION
+% ================================================================
+\chapter{Packet Tracer Simulation}
+
+This chapter documents the Packet Tracer simulation built to validate the
+logical design described in the previous chapters.
+Because Packet Tracer does not support the modular Cisco Catalyst 9410R
+chassis or the Palo Alto PA-3440 firewall, equivalent Packet Tracer
+device models are substituted while preserving the same logical behaviour:
+VLAN segmentation, inter-VLAN routing, VoIP telephony, wireless
+connectivity, DHCP address assignment, Internet reachability, and
+Management VLAN isolation are all demonstrated.
+
+% ----------------------------------------------------------------
+\section{Network Topology Overview}
+% ----------------------------------------------------------------
+
+The simulated topology follows a two-zone structure of
+the physical design: one \textbf{MDF} cluster and one IDF cluster, interconnected by a shared backbone trunk.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\linewidth]{figures/pkt_simulation.png}
+  \caption{Packet Tracer -- Simulated Network Topology.}
+  \label{fig:pt_topology}
+\end{figure}
+
+Each IDF cluster is built using \textbf{data switches}
+(Cisco 2960-24TT) for workstations, laptops, access points and IP phones.
+The MDF core switch connects the IDF over a shared
+backbone trunk (fa0/6--fa0/10).
+The firewall sits between the ISP router and the MDF core switch,
+enforcing the perimeter policy described in
+Chapter~\ref{chap:environment}.
+
+% ----------------------------------------------------------------
+\section{IP Addressing and DHCP}
+% ----------------------------------------------------------------
+
+The simulation uses the \textbf{10.1.10.0/24} block for all
+infrastructure and end-device addresses.
+A dedicated \textbf{Server-PT} (10.1.10.2) acts as the centralised DHCP
+server, distributing addresses to all end devices laptops, tablets,
+smartphones, IP phones).
+The default gateway for all pools points to the MDF core switch
+(10.1.10.18).
+
+All end devices confirmed a successful DHCP lease before any
+connectivity test was performed.
+
+% ----------------------------------------------------------------
+\section{VLAN Configuration and Inter-VLAN Routing}
+% ----------------------------------------------------------------
+
+The MDF core switch (Cisco 3560) is configured with three VLANs covering
+the three principal traffic classes present in the building:
+
+\begin{table}[H]
+  \centering
+  \caption{Simulated VLANs}
+  \label{tab:pt_vlans}
+  \begin{tabular}{C{1.5cm} L{3.5cm} C{3cm} L{3.5cm}}
+    \toprule
+    \textbf{VLAN ID} & \textbf{Name} & \textbf{Subnet} & \textbf{Purpose} \\
+    \midrule
+    1   & Data / Default & 10.1.10.0/24 & Workstations, laptops, management \\
+    \rowcolor{rowgray}
+    10  & Voice          & 10.1.10.0/24 & IP phones (voice VLAN on phone ports) \\
+    20  & Wireless       & 10.1.10.0/24 & AP-associated wireless clients \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+All inter-switch links operate as \textbf{802.1Q trunks}.
+Phone-facing ports are configured in voice VLAN mode
+(\texttt{switchport voice vlan 10}), allowing Cisco 7960 phones to
+register with the CME router while passing data traffic on the native
+VLAN.
+Inter-VLAN routing is performed on the MDF 3560 SVIs. Connectivity
+between data clients, voice clients, and wireless clients was verified
+by \texttt{ping} tests across each pair before proceeding to
+feature-specific testing.
+
+% ----------------------------------------------------------------
+\section{VoIP Configuration and Call Demonstration}
+% ----------------------------------------------------------------
+
+IP telephony is implemented on a Cisco 2811 router configured as
+\textbf{Cisco CallManager Express (CME)}, connected to the MDF core
+switch.
+The CME is configured with six ephone-dn directory numbers supporting
+up to ten registered phones (\texttt{max-ephones 10}), distributed
+across both floors as shown in Table~\ref{tab:pt_phones}.
+
+\begin{table}[H]
+  \centering
+  \caption{IP Phone Extensions and Floor Assignment}
+  \label{tab:pt_phones}
+  \begin{tabular}{L{3.5cm} C{2cm} C{2.5cm} L{3.2cm}}
+    \toprule
+    \textbf{Device} & \textbf{Extension} & \textbf{Floor} & \textbf{Phone Switch} \\
+    \midrule
+    7960 GroundFloor1 & 101 & Ground & MDF \\
+    \rowcolor{rowgray}
+    7960 GroundFloor2 & 102 & Ground & MDF \\
+    7960 GroundFloor3 & 103 & Ground & MDF \\
+    \rowcolor{rowgray}
+    7960 FirstFloor1  & 201 & First  & IDF \\
+    7960 FirstFloor2  & 202 & First  & IDF \\
+    \rowcolor{rowgray}
+    7960 FirstFloor3  & 203 & First  & IDF \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+A successful call between extension~101 (ground floor) and extension~201
+(first floor) was demonstrated: both phones registered with the CME
+router, the call connected, and two-way audio was confirmed.
+
+% ----------------------------------------------------------------
+\section{Wireless LAN}
+% ----------------------------------------------------------------
+
+Six access points (AP1--AP3 on the ground floor connected to the MDF
+data switch; AP4--AP6 on the first floor connected to the IDF data
+switch) are managed centrally by the \textbf{WLC-2504} Wireless LAN
+Controller, which is connected to the MDF core switch.
+The controller broadcasts the SSID \texttt{CND-Wireless} with WPA2-PSK
+authentication (\texttt{CND12345}).
+
+Wireless connectivity was verified on both floors:
+\begin{itemize}[noitemsep]
+  \item \textbf{Ground floor:} Laptop7, Tablet~PC0, Smartphone0, and
+        Smartphone0(1) associated with AP1--AP3 and received DHCP addresses.
+  \item \textbf{First floor:} Laptop8 and Smartphone1 associated with
+        AP4--AP6 and received DHCP addresses.
+  \item All wireless clients successfully pinged wired laptops on the
+        opposite floor, confirming end-to-end routing through the MDF core.
+\end{itemize}
+
+% ----------------------------------------------------------------
+\section{Internet Connectivity}
+% ----------------------------------------------------------------
+
+A Cisco 2911 \textbf{ISP router} is connected to the WAN interface of
+the firewall.
+A web server simulating \texttt{www.ciscobook.com} is attached to the ISP
+router to represent an external Internet destination.
+The firewall performs NAT, translating internal 10.1.10.0/24 addresses
+to the public IP defined in Chapter~\ref{chap:vlans} (203.0.113.6).
+Successful HTTP access from an internal laptop to the external web server
+was demonstrated, confirming that NAT and the firewall perimeter policy
+operate correctly.
+
+% ----------------------------------------------------------------
+\section{Management and SSH Access}
+% ----------------------------------------------------------------
+
+A dedicated \textbf{Admin PC} (PC2, credentials
+\texttt{admin}/\texttt{Admin123}) represents the only authorised
+management host.
+All switches and the CME router are configured with SSH; RSA keys are
+generated on each device and login is restricted to the
+\texttt{admin}/\texttt{CND12345} local account.
+
+Isolation was verified by confirming that a data-VLAN laptop was unable
+to ping the MDF core switch management address (10.1.10.18), but the
+Admin PC successfully opened SSH sessions to every switch and router in
+the topology.
+
+% ================================================================
+%  CHAPTER 8 – NETWORK DRAWINGS
 % ================================================================
 \chapter{Network Drawings}
 
@@ -1179,8 +1485,8 @@ TODO
 
 Key features:
 \begin{itemize}[noitemsep]
-  \item MDF room located adjacent to Room~1.11
-  \item IDF1 located at the far wing, adjacent to Room~1.23
+  \item MDF room located adjacent to Room~1.11 
+  \item IDF1 located at the far wing, adjacent to Room~1.23 
   \item Main cable tray runs along the corridor spine
   \item 22 networked rooms, bathrooms (1.3, 1.9, 1.10, 1.20, 1.21, 1.28, 1.34, 1.35) excluded
 \end{itemize}
@@ -1233,8 +1539,6 @@ WS, Phones, APs per floor zone
 
 Rack layout diagrams for all four distribution frames are described in
 Chapter~\ref{chap:environment} (Tables~\ref{tab:rack_mdf} and \ref{tab:rack_idf}).
-
-TODO... maybe add something more visual
 
 % ================================================================
 %  CHAPTER 9 – REFERENCES
